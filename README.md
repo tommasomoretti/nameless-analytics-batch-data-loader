@@ -1,8 +1,8 @@
 # nameless-analytics-data-loader
 
-Load event data from structured csv.
-
-[nameless-analytics.csv](https://github.com/user-attachments/files/18222451/nameless-analytics.csv)
+Load event data from structured csv. 
+- [Google Sheets template](https://docs.google.com/spreadsheets/d/1RxHfa4KQkciep-xiskgMLITrvxJAntoSnmGkmHYt7ls/) 
+- [CSV template](https://github.com/user-attachments/files/18222451/nameless-analytics.csv)
 
 ```py 
 import csv
