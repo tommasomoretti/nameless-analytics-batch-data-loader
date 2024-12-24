@@ -1,6 +1,6 @@
 ![Na logo beta](https://github.com/tommasomoretti/nameless-analytics/assets/29273232/7d4ded5e-4b79-46a2-b089-03997724fd10)
 
-# Server-side data loader
+# Data loader
 The Nameless Analytics data loader is a python script that manages and loads data from a structured CSV file.
 
 - [CSV template](https://github.com/user-attachments/files/18222451/nameless-analytics.csv)
