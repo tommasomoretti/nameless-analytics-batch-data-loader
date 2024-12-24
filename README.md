@@ -1,6 +1,8 @@
-# nameless-analytics-data-loader
+![Na logo beta](https://github.com/tommasomoretti/nameless-analytics/assets/29273232/7d4ded5e-4b79-46a2-b089-03997724fd10)
 
-Load event data from structured csv.
+# Server-side data loader
+The Nameless Analytics data loader is a python script that manages and loads data from a structured CSV file.
+
 - [CSV template](https://github.com/user-attachments/files/18222451/nameless-analytics.csv)
 - [Google Sheets template](https://docs.google.com/spreadsheets/d/1RxHfa4KQkciep-xiskgMLITrvxJAntoSnmGkmHYt7ls/) 
 
