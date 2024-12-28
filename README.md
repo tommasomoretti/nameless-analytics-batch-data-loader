@@ -10,7 +10,7 @@ Here an example in Google Sheets for structuring the data correctly, the CSV tem
 - [CSV template](https://github.com/user-attachments/files/18222451/nameless-analytics.csv)
 
 ## Load data into main table
-### From a local machine or a server to Google BigQuery
+### From a local machine or a remote server to Google BigQuery
 Ensure that the Python Client for Google BigQuery is installed before executing the script. 
 
 ```terminal
@@ -25,11 +25,11 @@ import time
 from google.cloud import bigquery
 
 # Configurations
-CREDENTIALS_PATH = '/Users/tommasomoretti/Desktop/nameless_analytics/tom-moretti-1cbb44553fc3.json'
-CSV_FILE_PATH = '/Users/tommasomoretti/Desktop/nameless_analytics/documentazione/code/nameless-analytics.csv'
-PROJECT_ID = 'tom-moretti'
-DATASET_ID = 'nameless_analytics'
-TABLE_ID = 'events'
+CREDENTIALS_PATH = 'credentials-path' # Change it according to the credential path in your local machine or remote server 
+CSV_FILE_PATH = 'csv-file-path' # Change it according to the csv path in your local machine or remote server 
+PROJECT_ID = 'project-id' # Change it according to your project
+DATASET_ID = 'dataset-id' # Change it according to Nameless Analytics dataset
+TABLE_ID = 'table-id' # Change it according to Nameless Analytics main table
 
 def prepare_structured_data(csv_file_path):
     structured_data = []
@@ -135,6 +135,19 @@ if __name__ == "__main__":
 ```
 
 ### From a Google Cloud Function to Google BigQuery
+This version of the Nameless Analytics data loader, take the csv file from a Google Cloud Storage bucket and insert it in the Nameless Analytics main table. The Google Cloud Function will be triggered by a Google Cloud Storage event, running automatically whenever a file is uploaded to a specified bucket. 
+
+Create a [new Google Cloud Storage bucket](https://console.cloud.google.com/storage/). 
+
+Create a [new Google Cloud Funtion](https://console.cloud.google.com/functions/) (Gen 1) as described above.
+
+<img width="1512" alt="Screenshot 2024-12-28 alle 14 47 06" src="https://github.com/user-attachments/assets/ed0df3b0-8821-46c2-8e66-22b2cf103789" />
+
+In the next step, select Python 3.12 as runtime 
+
+<img width="1512" alt="Screenshot 2024-12-28 alle 14 56 23" src="https://github.com/user-attachments/assets/2cee3899-7013-4071-ac7e-3e8701fb44ad" />
+
+Edit the file named main.py with this script:
 
 ```py 
 import csv
@@ -144,9 +157,9 @@ from google.cloud import bigquery, storage
 
 
 # Configurations
-PROJECT_ID = 'tom-moretti'
-DATASET_ID = 'nameless_analytics'
-TABLE_ID = 'events'
+PROJECT_ID = 'project-id' # Change it according to your project
+DATASET_ID = 'dataset-id' # Change it according to Nameless Analytics dataset
+TABLE_ID = 'table-id' # Change it according to Nameless Analytics main table
 
 def download_blob(bucket_name, source_blob_name):
     try:
@@ -258,3 +271,15 @@ def main(event, context):
     except Exception as e:
         print(f"{e}")
 ```
+
+Edit the requirements.txt file with this lines:
+
+```
+google-cloud-bigquery>=3.11.4
+google-cloud-storage>=2.13.2
+```
+
+Save the Google Cloud Function and load a valid csv file in the Google Cloud Storage bucket configured in the trigger section.
+
+<img width="1512" alt="Screenshot 2024-12-28 alle 14 58 38" src="https://github.com/user-attachments/assets/04992ee5-6ca2-4fa9-9ee7-c5c028b08452" />
+
