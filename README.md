@@ -129,7 +129,7 @@ if __name__ == "__main__":
         print(f"{e}")
 ```
 
-### From a Cloud function to Google BigQuery
+### From a Google Cloud Function to Google BigQuery
 
 ```py 
 import csv
