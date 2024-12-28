@@ -1,15 +1,16 @@
 ![Na logo beta](https://github.com/tommasomoretti/nameless-analytics/assets/29273232/7d4ded5e-4b79-46a2-b089-03997724fd10)
 
 # Data loader
-The Nameless Analytics data loader is a python script that manages and loads data from a structured CSV file.
+The Nameless Analytics data loader is a python script that manages and loads data from a CSV file.
+- Use [this script](#load-data-from-a-local-machine-or-a-server-to-google-bigquery) to load data from a local machine or a server to Google BigQuery
+- Use [this script](#load-data-from-a-cloud-function-to-google-bigquery) to load data from a Google Cloud Function to Google BigQuery
+
+Here an example in Google Sheets for structuring the data correctly, the CSV template is exported from here:
+- [Google Sheets template](https://docs.google.com/spreadsheets/d/1RxHfa4KQkciep-xiskgMLITrvxJAntoSnmGkmHYt7ls/)
 - [CSV template](https://github.com/user-attachments/files/18222451/nameless-analytics.csv)
 
-Here an example of how structure the csv in Google Sheets:
-- [Google Sheets template](https://docs.google.com/spreadsheets/d/1RxHfa4KQkciep-xiskgMLITrvxJAntoSnmGkmHYt7ls/)
-
-
 ## Load data into main table
-### Use this script to load data from a local machine or a server to Google BigQuery.
+### Load data from a local machine or a server to Google BigQuery
 
 ```py 
 import os
@@ -128,7 +129,7 @@ if __name__ == "__main__":
         print(f"{e}")
 ```
 
-### Use this script to load data from a Cloud function to Google BigQuery.
+### Load data from a Cloud function to Google BigQuery
 
 ```py 
 import csv
