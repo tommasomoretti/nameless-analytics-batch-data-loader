@@ -11,7 +11,11 @@ Here an example in Google Sheets for structuring the data correctly, the CSV tem
 
 ## Load data into main table
 ### From a local machine or a server to Google BigQuery
-Ensure that the Python Client for Google BigQuery is installed before executing the script. For installation instructions, refer to the [official documentation](https://cloud.google.com/bigquery/docs/reference/libraries?hl=en).
+Ensure that the Python Client for Google BigQuery is installed before executing the script. 
+
+```terminal
+pip install --upgrade google-cloud-bigquery
+```
 
 ```py 
 import os
