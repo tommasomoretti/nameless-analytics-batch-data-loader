@@ -7,24 +7,24 @@ The Nameless Analytics data loader is a python script that manages and loads dat
 - Use [this script](#from-a-local-machine-or-a-server-to-google-bigquery) to load data from a local machine or a server to Google BigQuery
 - Use [this script](#from-a-google-cloud-function-to-google-bigquery) to load data from a Google Cloud Function to Google BigQuery
 
-Here an example in Google Sheets for structuring the data correctly, the CSV template is exported from here:
+Here an example in Google Sheets for structuring the data correctly, the CSV template example file is exported from here:
 - [Google Sheets template](https://docs.google.com/spreadsheets/d/1RxHfa4KQkciep-xiskgMLITrvxJAntoSnmGkmHYt7ls/)
-- [CSV template](https://github.com/user-attachments/files/18222451/nameless-analytics.csv)
+
+
 
 ## Load data into main table
 ### From a local machine or a remote server to Google BigQuery
+This version of the Nameless Analytics Data Loader, take a csv file from a folder and inserts it in Nameless Analytics main table. 
+
 Ensure that the Python Client for Google BigQuery is installed before executing the script. 
 
 ```terminal
 pip install --upgrade google-cloud-bigquery
 ```
 
-```py 
-
-```
 
 ### From a Google Cloud Function to Google BigQuery
-This version of the Nameless Analytics data loader, take the csv file from a Google Cloud Storage bucket and insert it in the Nameless Analytics main table. The Google Cloud Function will be triggered by a Google Cloud Storage event, running automatically whenever a file is uploaded to a specified bucket. 
+This version of the Nameless Analytics Data Loader, take a csv file from a Google Cloud Storage bucket and inserts it in Nameless Analytics main table. The Google Cloud Function will be triggered by a Google Cloud Storage event, running automatically whenever a file is uploaded to a specified bucket. 
 
 Create a [new Google Cloud Storage bucket](https://console.cloud.google.com/storage/). 
 
@@ -37,10 +37,6 @@ In the next step, select Python 3.12 as runtime
 <img width="1512" alt="Screenshot 2024-12-28 alle 14 56 23" src="https://github.com/user-attachments/assets/2cee3899-7013-4071-ac7e-3e8701fb44ad" />
 
 Edit the file named main.py with this script:
-
-```py 
-
-```
 
 Edit the requirements.txt file with this lines:
 
