@@ -1,5 +1,7 @@
 ![Na logo beta](https://github.com/tommasomoretti/nameless-analytics/assets/29273232/7d4ded5e-4b79-46a2-b089-03997724fd10)
 
+---
+
 # Data loader
 The Nameless Analytics data loader is a python script that manages and loads data from a CSV file.
 - Use [this script](#from-a-local-machine-or-a-server-to-google-bigquery) to load data from a local machine or a server to Google BigQuery
