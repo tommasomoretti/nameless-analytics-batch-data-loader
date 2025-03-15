@@ -11,8 +11,7 @@ Here an [example in Google Sheets](https://docs.google.com/spreadsheets/d/1RxHfa
 
 
 
-## Load data into main table
-### From a local machine or a remote server to Google BigQuery
+## From a local machine or a remote server to Google BigQuery
 This version of the Nameless Analytics Data Loader, take a csv file from a folder and inserts it in Nameless Analytics main table. 
 
 Ensure that the Python Client for Google BigQuery is installed before executing the script. 
@@ -22,7 +21,7 @@ pip install --upgrade google-cloud-bigquery
 ```
 
 
-### From a Google Cloud Function to Google BigQuery
+## From a Google Cloud Function to Google BigQuery
 This version of the Nameless Analytics Data Loader, take a csv file from a Google Cloud Storage bucket and inserts it in Nameless Analytics main table. The Google Cloud Function will be triggered by a Google Cloud Storage event, running automatically whenever a file is uploaded to a specified bucket. 
 
 Create a [new Google Cloud Storage bucket](https://console.cloud.google.com/storage/). 
