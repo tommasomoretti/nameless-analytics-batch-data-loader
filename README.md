@@ -5,7 +5,7 @@
 # Data loader
 The Nameless Analytics data loader is a python script that manages and loads data from a CSV file.
 
-For an overview of how Nameless Analytics works start from here.
+For an overview of how Nameless Analytics works [start from here](https://github.com/tommasomoretti/nameless-analytics).
 
 Start from here:
 - [Preparing data](#preparing-data)
