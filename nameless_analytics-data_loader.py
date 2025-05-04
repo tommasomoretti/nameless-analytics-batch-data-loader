@@ -16,7 +16,7 @@ from google.cloud import bigquery
 
 
 # Configurations
-CSV_FILE_PATH = '/Users/tommasomoretti/Documents/Nameless Analytics/Data loader/data_loader-demo_events.csv'
+CSV_FILE_PATH = '/Users/tommasomoretti/Documents/GitHub/nameless-analytics-data-loader/data_loader-demo_events.csv'
 CREDENTIALS_PATH = '/Users/tommasomoretti/Documents/Nameless Analytics/worker_service_account.json'
 
 PROJECT_ID = 'tom-moretti'
@@ -47,6 +47,16 @@ def prepare_structured_data(csv_file_path):
 
             reader = csv.DictReader(csvfile)
             for row in reader:
+                user_data = [
+                    {"name": key.split(".")[1], "value": convert_value(value)}
+                    for key, value in row.items() if key.startswith("user_data")
+                ]
+
+                session_data = [
+                    {"name": key.split(".")[1], "value": convert_value(value)}
+                    for key, value in row.items() if key.startswith("session_data")
+                ]
+
                 event_data = [
                     {"name": key.split(".")[1], "value": convert_value(value)}
                     for key, value in row.items() if key.startswith("event_data")
@@ -66,12 +76,16 @@ def prepare_structured_data(csv_file_path):
                     "job_id": None,
                     "content_length": row.get("content_length"),
                     "client_id": row.get("client_id"),
-                    "user_id": row.get("user_id"),
                     "session_id": row.get("session_id"),
                     "event_name": row.get("event_name"),
+                    "event_id": row.get("event_id"),
+                    "user_data": user_data,
+                    "session_data": session_data,
                     "event_data": event_data,
                     "consent_data": consent_data
                 })
+
+        print(structured_data)
         log_success("Payload structured successfully.")
     except FileNotFoundError:
         log_error(f"File {csv_file_path} not found.")
