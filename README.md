@@ -6,9 +6,9 @@
 ---
 
 # Data batch loader
-The Nameless Analytics Data Loader is a python script that manages and loads data to [Nameless Analytics Main table](https://github.com/tommasomoretti/nameless-analytics-tables) from a CSV file.
+The Nameless Analytics Data Loader is a python script that manages and loads data to [Nameless Analytics Main table](https://github.com/tommasomoretti/nameless-analytics-tables/) from a CSV file.
 
-For an overview of how Nameless Analytics works [start from here](https://github.com/tommasomoretti/nameless-analytics).
+For an overview of how Nameless Analytics works [start from here](https://github.com/tommasomoretti/nameless-analytics/).
 
 Start from here:
 - [Preparing data](#preparing-data)
