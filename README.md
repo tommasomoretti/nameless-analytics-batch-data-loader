@@ -25,7 +25,7 @@ Here an [example in Google Sheets](https://docs.google.com/spreadsheets/d/1RxHfa
 ## From a local machine or a remote server to Google BigQuery
 This version of the Nameless Analytics Data Loader, take a csv file from a folder and inserts it in Nameless Analytics main table. 
 
-Ensure that the Python Client for Google BigQuery is installed before executing the script. 
+Please note: Python client for Google BigQuery must be installed before execute the script. 
 
 ```terminal
 pip install --upgrade google-cloud-bigquery
