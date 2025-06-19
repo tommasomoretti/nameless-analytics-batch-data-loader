@@ -10,7 +10,7 @@ The Nameless Analytics Batch data loader is a python script that manages and loa
 
 For an overview of how Nameless Analytics works [start from here](https://github.com/tommasomoretti/nameless-analytics/).
 
-Start from here:
+Table of contents:
 - [Preparing data](#preparing-data)
 - [load data from a local machine or a server](#from-a-local-machine-or-a-remote-server-to-google-bigquery) to Google BigQuery
 - [load data from a Google Cloud Function](#from-a-google-cloud-function-to-google-bigquery) to Google BigQuery
