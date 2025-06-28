@@ -1,8 +1,7 @@
-# NAMELESS ANALYTICS DATA LOADER 
-# PYTHON CODE  
+# NAMELESS ANALYTICS BATCH DATA LOADER 
 
 # Template for building CSV
-# https://docs.google.com/spreadsheets/d/1RxHfa4KQkciep-xiskgMLITrvxJAntoSnmGkmHYt7ls/edit?gid=1495129113#gid=1495129113
+# https://docs.google.com/spreadsheets/d/1RxHfa4KQkciep-xiskgMLITrvxJAntoSnmGkmHYt7ls/
 
 import os
 import csv
@@ -16,13 +15,13 @@ from google.cloud import bigquery
 
 
 # Configurations
-CSV_FILE_PATH = '/Users/tommasomoretti/Documents/GitHub/nameless-analytics-data-loader/data_loader-demo_events.csv'
-CREDENTIALS_PATH = '/Users/tommasomoretti/Documents/Nameless Analytics/worker_service_account.json'
+CSV_FILE_PATH = '[PATH_TO_CSV]/batch_data_loader-demo_events.csv'
+CREDENTIALS_PATH = '[PATH_TO_SERVICE_ACCOUNT]/service_account.json'
 
-PROJECT_ID = 'tom-moretti'
-DATASET_ID = 'nameless_analytics'
-TABLE_ID = 'events'
-LOG_TABLE_ID = 'data_loader_logs'
+PROJECT_ID = '[PROJECT_NAME]'
+DATASET_ID = '[DATASET_NAME]'
+TABLE_ID = 'events_raw'
+LOG_TABLE_ID = 'batch_data_loader_logs'
 
 # Logging functions
 def log_info(message):
