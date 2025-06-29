@@ -6,14 +6,14 @@
 ---
 
 # Batch data loader
-The Nameless Analytics Batch data loader is a python script that manages and loads data to [Nameless Analytics Main table](https://github.com/tommasomoretti/nameless-analytics-tables/) from a CSV file.
+The Nameless Analytics Batch data loader is a python script that manages and loads data to [Nameless Analytics Event raw table](https://github.com/tommasomoretti/nameless-analytics-tables/#events-raw-table) from a CSV file.
 
 For an overview of how Nameless Analytics works [start from here](https://github.com/tommasomoretti/nameless-analytics/).
 
 Table of contents:
 - [Preparing data](#preparing-data)
-- [load data from a local machine or a server](#from-a-local-machine-or-a-remote-server-to-google-bigquery) to Google BigQuery
-- [load data from a Google Cloud Function](#from-a-google-cloud-function-to-google-bigquery) to Google BigQuery
+- [Load data from local machine or remote server](#load-data-from-local-machine-or-remote-server)
+- [load data from Google Cloud Function](#load-data-from-google-cloud-function) to Google BigQuery
 
 
 
@@ -22,7 +22,7 @@ Here an [example in Google Sheets](https://docs.google.com/spreadsheets/d/1RxHfa
 
 
 
-## From a local machine or a remote server to Google BigQuery
+## Load data from a local machine or a remote server to Google BigQuery
 This version of the Nameless Analytics Data Loader, take a csv file from a folder and inserts it in Nameless Analytics main table. 
 
 Please note: Python client for Google BigQuery must be installed before execute the script. 
