@@ -123,7 +123,12 @@ def try_parse_json(value):
 # Upload data to BigQuery
 def upload_to_bigquery(data, project_id, dataset_id, table_id, log_table_id, credentials_path):
     print(f"👉 Uploading data to {project_id}.{dataset_id}.{table_id}...")
+    
+    start_time = time.time()
+
     job_id = os.urandom(8).hex()
+    for item in data:
+        item["job_id"] = job_id
 
     upload_status = {
         "success": False,
@@ -131,9 +136,6 @@ def upload_to_bigquery(data, project_id, dataset_id, table_id, log_table_id, cre
         "rows_inserted": 0,
         "execution_time": None
     }
-
-    for item in data:
-        item["job_id"] = job_id
 
     try:
         client = bigquery.Client.from_service_account_json(credentials_path)
@@ -144,7 +146,7 @@ def upload_to_bigquery(data, project_id, dataset_id, table_id, log_table_id, cre
             error_msg = f"Dataset {dataset_id} not found in project {project_id}."
             upload_status["message"] = error_msg
             raise
-        
+
         table_ref = f"{project_id}.{dataset_id}.{table_id}"
         try:
             client.get_table(table_ref)
@@ -152,30 +154,54 @@ def upload_to_bigquery(data, project_id, dataset_id, table_id, log_table_id, cre
             error_msg = f"Table {table_id} not found in dataset {dataset_id}."
             upload_status["message"] = error_msg
             raise
-        
-        start_time = time.time()
-        try:
-            errors = client.insert_rows_json(table_ref, data)
-            if errors:
-                error_msg = f"BigQuery insert failed with errors: {json.dumps(errors, indent=2)}"
-                upload_status["message"] = error_msg
-                print(f"  🔴 {error_msg}")
-                raise Exception(error_msg)
-        except Exception as e:
-            error_msg = f"Error during data upload to {table_ref}: {str(e)}"
+
+        errors = client.insert_rows_json(table_ref, data)
+        if errors:
+            error_msg = f"BigQuery insert failed with errors: {json.dumps(errors, indent=2)}"
             upload_status["message"] = error_msg
             print(f"  🔴 {error_msg}")
-            raise
-        
+            raise Exception(error_msg)
+
         execution_time = int((time.time() - start_time) * 1000)
-        upload_status.update({"success": True, "message": f"Data successfully uploaded to {table_ref}", "rows_inserted": len(data), "execution_time": execution_time})
+        upload_status.update({
+            "success": True,
+            "message": f"Data successfully uploaded to {table_ref}",
+            "rows_inserted": len(data),
+            "execution_time": execution_time
+        })
         print(f"  🟢 {upload_status['message']}")
-        log_data = {"date": time.strftime("%Y-%m-%d"), "datetime": time.strftime("%Y-%m-%dT%H:%M:%S"), "timestamp": round(time.time() * 1000), "job_id": job_id, "status": "Success" if upload_status["success"] else "Failure", "message": upload_status["message"], "execution_time_micros": upload_status["execution_time"], "rows_inserted": upload_status["rows_inserted"]}
-        log_operation(project_id, dataset_id, log_table_id, log_data, credentials_path)
+
     except Exception as e:
-        upload_status["message"] = str(e)
-        print(f"  🔴 Error uploading payload to BigQuery:", e)
-        raise
+        execution_time = int((time.time() - start_time) * 1000)
+        if not upload_status["message"]:
+            upload_status["message"] = str(e)
+        upload_status.update({
+            "success": False,
+            "execution_time": execution_time,
+            "rows_inserted": 0
+        })
+        # print(f"  🔴 Error uploading payload to BigQuery: {upload_status['message']}")
+
+    finally:
+        # Log the upload attempt, sia successo che fallito
+        log_data = {
+            "date": time.strftime("%Y-%m-%d"),
+            "datetime": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            "timestamp": round(time.time() * 1000),
+            "job_id": job_id,
+            "status": "Success" if upload_status["success"] else "Failure",
+            "message": upload_status["message"],
+            "execution_time_micros": upload_status["execution_time"],
+            "rows_inserted": upload_status["rows_inserted"]
+        }
+        try:
+            log_operation(project_id, dataset_id, log_table_id, log_data, credentials_path)
+        except Exception as log_exc:
+            print(f"  🔴 Error logging operation: {log_exc}")
+
+    # Se fallito, rilancio l'eccezione per segnalare errore al chiamante
+    if not upload_status["success"]:
+        raise Exception(upload_status["message"])
 
 
 # --------------------------------------------------------------------------------------------------------------
