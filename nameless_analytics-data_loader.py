@@ -15,34 +15,30 @@ from google.cloud import bigquery
 
 
 # Configurations
-CSV_FILE_PATH = '[PATH_TO_CSV]/batch_data_loader-demo_events.csv'
-CREDENTIALS_PATH = '[PATH_TO_SERVICE_ACCOUNT]/service_account.json'
+# CSV_FILE_PATH = '[PATH_TO_CSV]/batch_data_loader-demo_events.csv'
+# CREDENTIALS_PATH = '[PATH_TO_SERVICE_ACCOUNT]/service_account.json'
 
-PROJECT_ID = '[PROJECT_NAME]'
-DATASET_ID = '[DATASET_NAME]'
+# PROJECT_ID = '[PROJECT_NAME]'
+# DATASET_ID = '[DATASET_NAME]'
+
+CSV_FILE_PATH = '/Users/tommasomoretti/Documents/GitHub/nameless-analytics-data-loader/batch_data_loader-demo_events.csv'
+CREDENTIALS_PATH = '/Users/tommasomoretti/Documents/Nameless Analytics/worker_service_account.json'
+
+PROJECT_ID = 'tom-moretti'
+DATASET_ID = 'nameless_analytics'
+
 TABLE_ID = 'events_raw'
 LOG_TABLE_ID = 'batch_data_loader_logs'
 
-# Logging functions
-def log_info(message):
-    print(f"{message}")
-
-def log_success(message):
-    print(f"  🟢 {message}")
-
-def log_error(message, exception=None):
-    print(f"  🔴 {message}")
-    if exception:
-        print(traceback.format_exc())
 
 # Structure CSV for BigQuery
 def prepare_structured_data(csv_file_path):
-    log_info(f"👉 Reading data from {csv_file_path}")
+    print(f"👉 Reading data from {csv_file_path}")
     structured_data = []
     try:
         with open(csv_file_path, 'r') as csvfile:
-            log_success(f"File {csv_file_path.split('/')[-1]} found.")
-            log_info("👉 Structuring payload...")
+            print(f"  🟢 File {csv_file_path.split('/')[-1]} found.")
+            print("👉 Structuring payload...")
 
             reader = csv.DictReader(csvfile)
             for row in reader:
@@ -84,13 +80,13 @@ def prepare_structured_data(csv_file_path):
                     "consent_data": consent_data
                 })
 
-        print(structured_data)
-        log_success("Payload structured successfully.")
+        print("  🟢 Payload structured successfully.")
     except FileNotFoundError:
-        log_error(f"File {csv_file_path} not found.")
+        print(f"  🔴 File {csv_file_path} not found.")
         raise
     except Exception as e:
-        log_error(f"Error during data preparation: {e}")
+        print(f"  🔴 Error during data preparation: {e}")
+        print(traceback.format_exc())
         raise
     
     return structured_data
@@ -124,7 +120,7 @@ def try_parse_json(value):
 
 # Upload data to BigQuery
 def upload_to_bigquery(data, project_id, dataset_id, table_id, log_table_id, credentials_path):
-    log_info(f"👉 Uploading data to {project_id}.{dataset_id}.{table_id}...")
+    print(f"👉 Uploading data to {project_id}.{dataset_id}.{table_id}...")
     job_id = os.urandom(8).hex()
 
     upload_status = {
@@ -161,38 +157,37 @@ def upload_to_bigquery(data, project_id, dataset_id, table_id, log_table_id, cre
             if errors:
                 error_msg = f"BigQuery insert failed with errors: {json.dumps(errors, indent=2)}"
                 upload_status["message"] = error_msg
-                log_error(error_msg)
+                print(f"  🔴 {error_msg}")
                 raise Exception(error_msg)
         except Exception as e:
             error_msg = f"Error during data upload to {table_ref}: {str(e)}"
             upload_status["message"] = error_msg
-            log_error(error_msg)
+            print(f"  🔴 {error_msg}")
             raise
         
         execution_time = int((time.time() - start_time) * 1000)
         upload_status.update({"success": True, "message": f"Data successfully uploaded to {table_ref}", "rows_inserted": len(data), "execution_time": execution_time})
-        log_success(upload_status["message"])
+        print(f"  🟢 {upload_status['message']}")
         log_data = {"date": time.strftime("%Y-%m-%d"), "datetime": time.strftime("%Y-%m-%dT%H:%M:%S"), "timestamp": round(time.time() * 1000), "job_id": job_id, "status": "Success" if upload_status["success"] else "Failure", "message": upload_status["message"], "execution_time_micros": upload_status["execution_time"], "rows_inserted": upload_status["rows_inserted"]}
         log_operation(project_id, dataset_id, log_table_id, log_data, credentials_path)
     except Exception as e:
         upload_status["message"] = str(e)
-        log_error(f'Error uploading payload to BigQuery {e}')
+        print(f"  🔴 Error uploading payload to BigQuery:", e)
         raise
 
 
 # --------------------------------------------------------------------------------------------------------------
 
 
-# Log function execution in BigQuery
+# Write Batch data loader execution logs in BigQuery
 def log_operation(project_id, dataset_id, log_table_id, log_data, credentials_path):
-    log_info("👉 Writing job logs...")
+    log_table_ref = f"{project_id}.{dataset_id}.{log_table_id}"
+    print(f"\n👉 Writing job logs to {log_table_ref}...")
     try:
         client = bigquery.Client.from_service_account_json(credentials_path)
-        log_table_ref = f"{project_id}.{dataset_id}.{log_table_id}"
         client.insert_rows_json(log_table_ref, [log_data])
-        log_success(f"Log successfully written to {log_table_ref}")
-    except Exception as e:
-        log_error(e)
+        print(f"  🟢 Log successfully written to {log_table_ref}")
+    except Exception:
         raise
 
 
@@ -201,11 +196,12 @@ def log_operation(project_id, dataset_id, log_table_id, log_data, credentials_pa
 
 if __name__ == "__main__":
     try:
-        log_info("----- NAMELESS ANALYTICS -----")
-        log_info("--------- DATA LOADER --------")
-        log_info("Function execution start: 🤞")
+        print("NAMELESS ANALYTICS")
+        print("BATCH DATA LOADER")
+        print(f"\nPrepare payload")
         structured_data = prepare_structured_data(CSV_FILE_PATH)
+        print(f"\nSend to BigQuery")
         upload_to_bigquery(structured_data, PROJECT_ID, DATASET_ID, TABLE_ID, LOG_TABLE_ID, CREDENTIALS_PATH)
-        log_info("Function execution end: 👍")
+        print("\nFunction execution end: 👍")
     except Exception as e:
-        log_info("Function execution end: 🖕")
+        print(f"\nFunction execution end: 🖕")
