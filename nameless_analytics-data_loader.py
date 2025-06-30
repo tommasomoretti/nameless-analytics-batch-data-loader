@@ -69,7 +69,7 @@ def prepare_structured_data(csv_file_path):
                     "event_datetime": row.get("event_datetime"),
                     "event_timestamp": row.get("event_timestamp"),
                     "processing_event_timestamp": round(time.time() * 1000),
-                    "event_origin": "Batch",
+                    "event_origin": "Batch data loader",
                     "job_id": None,
                     "content_length": row.get("content_length"),
                     "client_id": row.get("client_id"),
