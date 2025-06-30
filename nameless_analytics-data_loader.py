@@ -11,17 +11,17 @@ import traceback
 from google.cloud import bigquery
 
 
-# --------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 # Configurations
-# CSV_FILE_PATH = '[PATH_TO_CSV]/batch_data_loader-demo_events.csv'
+# CSV_FILE_PATH = '[PATH_TO_CSV]/Nameless Analytics - Data loader - events.csv'
 # CREDENTIALS_PATH = '[PATH_TO_SERVICE_ACCOUNT]/service_account.json'
 
 # PROJECT_ID = '[PROJECT_NAME]'
 # DATASET_ID = '[DATASET_NAME]'
 
-CSV_FILE_PATH = '/Users/tommasomoretti/Documents/GitHub/nameless-analytics-data-loader/batch_data_loader-demo_events.csv'
+CSV_FILE_PATH = '/Users/tommasomoretti/Documents/GitHub/nameless-analytics-data-loader/Nameless Analytics - Data loader - events.csv'
 CREDENTIALS_PATH = '/Users/tommasomoretti/Documents/Nameless Analytics/worker_service_account.json'
 
 PROJECT_ID = 'tom-moretti'
@@ -33,11 +33,13 @@ LOG_TABLE_ID = 'batch_data_loader_logs'
 
 # Structure CSV for BigQuery
 def prepare_structured_data(csv_file_path):
-    print(f"👉 Reading data from {csv_file_path}")
+    file_name = csv_file_path.split('/')[-1]
+
+    print(f"👉 Reading data from {file_name}")
     structured_data = []
     try:
         with open(csv_file_path, 'r') as csvfile:
-            print(f"  🟢 File {csv_file_path.split('/')[-1]} found.")
+            print(f"  🟢 File {file_name} found.")
             print("👉 Structuring payload...")
 
             reader = csv.DictReader(csvfile)
